@@ -1,0 +1,22 @@
+{
+  "name": "nattamai",
+  "version": "1.0.1",
+  "description": "neethi da nyaam da",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsmedhana/nattamai_v1.git"
+  },
+  "author": "dhanraj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itsmedhana/nattamai_v1/issues"
+  },
+  "homepage": "https://github.com/itsmedhana/nattamai_v1#readme",
+  "dependencies": {
+    "hapi": "^13.4.1"
+  }
+}
