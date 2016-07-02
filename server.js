@@ -1,4 +1,5 @@
 var hapi = require('hapi');
+var mysql = require('mysql');
 
 var quotes = [
   {
@@ -26,6 +27,12 @@ var quotes = [
 // creating the hapi server instance
 var server = new hapi.Server();
 
+var connection = mysql.createConnection({
+    host     : 'aa1nr1p0gstdyph.cb2hzdl82hkr.ap-southeast-2.rds.amazonaws.com',
+    user     : 'root',
+    password : 'Busybee123',
+    database : 'nattamai'
+});
 
 // adding a new connection that can be listened on
 server.connection({
@@ -34,14 +41,26 @@ server.connection({
   labels: ['web']
 });
 
+connection.connect();
 
+ 
+server.register(require('vision'), function(err){
 
+    if (err){
+	throw err;
+    }
+    
 // defining our routes
 server.route({
   method: 'GET',
   path: '/',
-  handler: function (request, reply) {
-    reply('Vanakkam Nattamai!');
+    handler: function (request, reply) {
+	connection.query('select id as priority, tablename as tables from nt_home', function(err, rows, fields){
+	    if(err) throw err;
+	    
+	    
+	    reply('Vanakkam Nattamai! Home Table name is '+ rows[0].tables);
+	});
   }
 });
 
@@ -70,7 +89,7 @@ server.route({
 , path: '/quote/{id?}'
 , handler: function(req, reply) {
     if (req.params.id) {
-      if (quotes.length <= req.params.id) {
+	if (quotes.length <= encodeURIComponent(req.params.id)) {
         return reply('No quote found.').code(404);
       }
       return reply(quotes[req.params.id]);
@@ -93,6 +112,7 @@ server.route({
   }
 });
 
+});    
 // starting the server
 server.start(function (err) {
   if (err) {
